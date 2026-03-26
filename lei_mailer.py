@@ -1,6 +1,3 @@
-"""
-lei_mailer.py
-"""
 import os, re, smtplib, requests
 from html import escape as _esc
 from datetime import datetime, timezone, timedelta
@@ -230,7 +227,7 @@ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,
       color:#ffffff;letter-spacing:.3px">
       &#127827;&ensp;LEI Update</h1>
   <p style="margin:12px 0 0;font-size:14px;color:#94a3b8">
-      The Conference Board &mdash; Business Cycle Indicators</p>
+      The CB &mdash; Business Cycle Indicators</p>
 </td></tr>
 
 <!-- ▌BODY ────────────────────────────────────────────── -->
