@@ -4,10 +4,10 @@
 
 | Item            | Detail                                          |
 | --------------- | ----------------------------------------------- |
-| Last Check      | 2026-03-26 10:56:32 UTC             |
+| Last Check      | 2026-04-17 09:50:17 UTC             |
 | Runner OS       | Linux                                       |
 | Repository      | inrs-ai/lei                               |
 | Default Branch  | main |
 | Total Commits   | 1                     |
-| Latest Commit   | 8758b33 - Create maintenance.yml (2026-03-26 18:55:56 +0800)           |
+| Latest Commit   | 72ee44e - chore(maintenance): monthly repo health check [2026-03] (2026-03-26 10:56:33 +0000)           |
 | Repo Size       | 88K             |
