@@ -14,7 +14,7 @@ SMTP_PASS     = os.environ["SMTP_PASS"]
 MAIL_TO       = os.environ["MAIL_TO"]
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL   = "groq/compound-mini"
+MODEL   = "llama-3.3-70b-versatile"
 
 PAGES = [
     ("China",
