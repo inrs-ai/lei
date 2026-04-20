@@ -120,7 +120,7 @@ def translate(text):
                                  "Chinese translation, no explanation.")},
                     {"role": "user", "content": text},
                 ],
-                "temperature": 0.2,
+                "temperature": 1.0,
             },
             headers={"Authorization": f"Bearer {GROQ_API_KEY}",
                      "Content-Type": "application/json"},
