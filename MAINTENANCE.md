@@ -4,10 +4,10 @@
 
 | Item            | Detail                                          |
 | --------------- | ----------------------------------------------- |
-| Last Check      | 2026-04-17 09:50:17 UTC             |
+| Last Check      | 2026-05-17 10:00:53 UTC             |
 | Runner OS       | Linux                                       |
 | Repository      | inrs-ai/lei                               |
 | Default Branch  | main |
 | Total Commits   | 1                     |
-| Latest Commit   | 72ee44e - chore(maintenance): monthly repo health check [2026-03] (2026-03-26 10:56:33 +0000)           |
+| Latest Commit   | 5853ed8 - Update lei_mailer.py (2026-04-20 11:38:57 +0800)           |
 | Repo Size       | 88K             |
