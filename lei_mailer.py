@@ -14,7 +14,7 @@ SMTP_PASS     = os.environ["SMTP_PASS"]
 MAIL_TO       = os.environ["MAIL_TO"]
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL   = "llama-3.3-70b-versatile"
+MODEL   = "groq/compound"
 
 PAGES = [
     ("China",
@@ -120,7 +120,7 @@ def translate(text):
                                  "Chinese translation, no explanation.")},
                     {"role": "user", "content": text},
                 ],
-                "temperature": 1.0,
+                "temperature": 0.2,
             },
             headers={"Authorization": f"Bearer {GROQ_API_KEY}",
                      "Content-Type": "application/json"},
