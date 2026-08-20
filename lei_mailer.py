@@ -13,7 +13,7 @@ SMTP_USER     = os.environ["SMTP_USER"]
 SMTP_PASS     = os.environ["SMTP_PASS"]
 MAIL_TO       = os.environ["MAIL_TO"]
 
-API_URL = "https://api.groq.com/openai/v1/models"
+API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL   = "openai/gpt-oss-120b"
 
 PAGES = [
