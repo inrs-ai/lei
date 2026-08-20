@@ -1,4 +1,4 @@
-import os, re, smtplib, requests
+import os, re, smtplib, requests, time
 from html import escape as _esc
 from datetime import datetime, timezone, timedelta
 from email.mime.multipart import MIMEMultipart
@@ -104,36 +104,65 @@ def scrape(html):
 # ═══════════════════════════════════════════════════════════
 #  2 · TRANSLATE
 # ═══════════════════════════════════════════════════════════
-def translate(text):
+def translate(text, max_retries=5):
     """Return Chinese str, or None on failure."""
     if not text or not text.strip():
         return ""
-    try:
-        r = requests.post(
-            API_URL,
-            json={
-                "model": MODEL,
-                "messages": [
-                    {"role": "system",
-                     "content": ("You are a professional English→Chinese "
-                                 "translator. Output ONLY the Simplified-"
-                                 "Chinese translation, no explanation.")},
-                    {"role": "user", "content": text},
-                ],
-                "temperature": 0.2,
-            },
-            headers={"Authorization": f"Bearer {GROQ_API_KEY}",
-                     "Content-Type": "application/json"},
-            timeout=180,
-        )
-        r.raise_for_status()
-        out = r.json()["choices"][0]["message"]["content"]
-        out = re.sub(r"<think>[\s\S]*?</think>", "", out)
-        out = re.sub(r"<think>[\s\S]*$", "", out)
-        return out.strip() or None
-    except Exception as e:
-        print(f"  ⚠  translate error: {e}")
-        return None
+        
+    for attempt in range(max_retries):
+        try:
+            r = requests.post(
+                API_URL,
+                json={
+                    "model": MODEL,
+                    "messages": [
+                        {"role": "system",
+                         "content": ("You are a professional English→Chinese "
+                                     "translator. Output ONLY the Simplified-"
+                                     "Chinese translation, no explanation.")},
+                        {"role": "user", "content": text},
+                    ],
+                    "temperature": 0.2,
+                },
+                headers={
+                    "Authorization": f"Bearer {GROQ_API_KEY}",
+                    "Content-Type": "application/json"
+                },
+                timeout=180,
+            )
+            
+            # 专门拦截并处理 429 状态码（请求频率超限）
+            if r.status_code == 429:
+                # 指数退避策略：1s, 2s, 4s, 8s... 最长等待 30s
+                wait_time = min(2 ** attempt, 30)  
+                print(f"  ⚠  触发 API 速率限制 (429)。将在 {wait_time} 秒后重试... (第 {attempt+1}/{max_retries} 次尝试)")
+                time.sleep(wait_time)
+                continue  # 跳过后续代码，重新进入循环
+                
+            # 如果不是 429，遇到其他 HTTP 错误（如 401, 500）则抛出异常
+            r.raise_for_status()
+            
+            out = r.json()["choices"][0]["message"]["content"]
+            # 清理可能存在的思考标签
+            out = re.sub(r"<think>[\s\S]*?</think>", "", out)
+            out = re.sub(r"<think>[\s\S]*$", "", out)
+            
+            result = out.strip()
+            if result:
+                print("  ⏳  翻译成功，主动休眠 15 秒以避免限流...")
+                time.sleep(15)
+                return result
+            else:
+                return None
+            
+        except Exception as e:
+            # 处理非 429 的其他异常（如网络超时、JSON 解析错误、鉴权失败等）
+            print(f"  ⚠  translate error: {e}")
+            return None
+            
+    # 如果重试了 max_retries 次依然 429，则返回 None
+    print("  ⚠  达到最大重试次数，翻译失败。")
+    return None
 
 
 # ═══════════════════════════════════════════════════════════
